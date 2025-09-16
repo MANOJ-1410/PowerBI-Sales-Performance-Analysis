@@ -17,7 +17,7 @@ An end-to-end Power BI project analyzing sales performance for a fictional compa
 - **Interactive Dashboards**: Sales by geography, team, and product.
 - **Trend Analysis**: Built-in Power BI forecasting tools.
 - **File Support**: `.pbix` for preview, `.pbip` for version control.
-- **Static Report**: `Power-BI-Project_1.pdf` for sharing.
+- **Static Report**: [`Power-BI-Project_1.pdf`](./Power-BI-Project_1.pdf) for sharing.
 
 ## Project Structure
 ```
