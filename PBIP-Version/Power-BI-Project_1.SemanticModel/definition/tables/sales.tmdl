@@ -1,0 +1,89 @@
+table sales
+	lineageTag: c0a9ff29-a81e-4fd9-b217-81ddc3f84344
+
+	measure 'Total Boxes' = SUM(sales[Boxes])
+		formatString: 0
+		lineageTag: 71e7dd41-ac56-4183-be53-9a2e3f6ad6b5
+
+	column 'Sales Person'
+		dataType: string
+		lineageTag: b588c04b-a602-4705-a376-120a6c2823e1
+		summarizeBy: none
+		sourceColumn: Sales Person
+
+		annotation SummarizationSetBy = Automatic
+
+	column Geography
+		dataType: string
+		lineageTag: 80529043-d78b-471e-ba84-a462d9e46f21
+		summarizeBy: none
+		sourceColumn: Geography
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product
+		dataType: string
+		lineageTag: 41ce0f6e-4e34-4a73-97fc-2f67dac0ace5
+		summarizeBy: none
+		sourceColumn: Product
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3425c165-1f66-409c-954c-24aaed575276
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: 53130193-05ff-48b8-938b-bc472aeca6f6
+			defaultHierarchy: LocalDateTable_2428d14a-742f-45dc-a6bf-fe043a5f595c.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Amount
+		dataType: int64
+		formatString: 0
+		lineageTag: 07cf7b4b-e187-41e6-a14d-8770c060f508
+		summarizeBy: sum
+		sourceColumn: Amount
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customers
+		dataType: int64
+		formatString: 0
+		lineageTag: 3985db70-d9b5-4c0d-b3cc-0243f30c0157
+		summarizeBy: sum
+		sourceColumn: Customers
+
+		annotation SummarizationSetBy = Automatic
+
+	column Boxes
+		dataType: int64
+		formatString: 0
+		lineageTag: bdcac7cf-af90-4d21-8800-0dc0fe06fe0d
+		summarizeBy: sum
+		sourceColumn: Boxes
+
+		annotation SummarizationSetBy = Automatic
+
+	partition sales = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\manoj.c\Desktop\PowerBI\PowerBI-P1-sales-data-blank.xlsx"), null, true),
+				    sales_Table = Source{[Item="sales",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(sales_Table,{{"Sales Person", type text}, {"Geography", type text}, {"Product", type text}, {"Date", type date}, {"Amount", Int64.Type}, {"Customers", Int64.Type}, {"Boxes", Int64.Type}}),
+				    #"Trimmed Text" = Table.TransformColumns(#"Changed Type",{{"Geography", Text.Trim, type text}})
+				in
+				    #"Trimmed Text"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

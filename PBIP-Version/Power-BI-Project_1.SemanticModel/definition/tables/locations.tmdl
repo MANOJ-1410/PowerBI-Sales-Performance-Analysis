@@ -1,0 +1,46 @@
+table locations
+	lineageTag: 9acfa89b-4b55-4d97-a383-619b09251a64
+
+	measure 'Total Amount' = SUM(sales[Amount])
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 1bb2aea1-83f1-43e2-a868-5c4ed2d1e7f5
+
+	measure 'Amount Per Box' = [Total Amount] / [Total Boxes]
+		lineageTag: b938bbe1-f0e3-431e-a4a3-064dc4855652
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Customers' = SUM(sales[Customers])
+		formatString: 0
+		lineageTag: 97008b9d-683d-47bc-80f3-1aea8ba7d47f
+
+	column Geo
+		dataType: string
+		lineageTag: 51144988-da08-4d77-93b3-bf658bee4033
+		summarizeBy: none
+		sourceColumn: Geo
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: 9d8182bd-047c-434d-ab65-fa2215c57a9e
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	partition locations = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\manoj.c\Desktop\PowerBI\PowerBI-P1-sales-data-blank.xlsx"), null, true),
+				    locations_Table = Source{[Item="locations",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(locations_Table,{{"Geo", type text}, {"Region", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

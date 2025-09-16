@@ -1,0 +1,17 @@
+relationship 53130193-05ff-48b8-938b-bc472aeca6f6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: sales.Date
+	toColumn: LocalDateTable_2428d14a-742f-45dc-a6bf-fe043a5f595c.Date
+
+relationship AutoDetected_4b345cce-45e8-4f30-81ff-0e9c84492039
+	fromColumn: sales.Product
+	toColumn: products.Product
+
+relationship AutoDetected_dfb7f29d-8ad6-42cb-8316-50cb5b63bb96
+	fromColumn: sales.'Sales Person'
+	toColumn: people.'Sales person'
+
+relationship 66a2ea88-90e9-7518-ad30-a12204d71b34
+	fromColumn: sales.Geography
+	toColumn: locations.Geo
+

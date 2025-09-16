@@ -1,0 +1,41 @@
+table products
+	lineageTag: 537503d9-a733-42cc-a720-7de4c7d4a5e6
+
+	column Product
+		dataType: string
+		lineageTag: a3906bc7-ec3a-4055-9d23-6d496c8fae41
+		summarizeBy: none
+		sourceColumn: Product
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 6bd2b356-6ed0-4e60-88bd-ccb8ca6dc369
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column Size
+		dataType: string
+		lineageTag: e081c6a1-0a86-4d16-a708-eb251315bae8
+		summarizeBy: none
+		sourceColumn: Size
+
+		annotation SummarizationSetBy = Automatic
+
+	partition products = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\manoj.c\Desktop\PowerBI\PowerBI-P1-sales-data-blank.xlsx"), null, true),
+				    products_Table = Source{[Item="products",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(products_Table,{{"Product", type text}, {"Category", type text}, {"Size", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

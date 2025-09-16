@@ -1,0 +1,43 @@
+table people
+	lineageTag: bae8f82e-c0a9-4bc6-a53a-2d3772125421
+
+	column 'Sales person'
+		dataType: string
+		lineageTag: b51150d3-85af-4e61-b3a5-659fc612579a
+		summarizeBy: none
+		sourceColumn: Sales person
+
+		annotation SummarizationSetBy = Automatic
+
+	column Team
+		dataType: string
+		lineageTag: cacc48c3-aadc-43f5-b52d-2a336165d3b3
+		summarizeBy: none
+		sourceColumn: Team
+
+		annotation SummarizationSetBy = Automatic
+
+	column Picture
+		dataType: string
+		lineageTag: 3388a9ae-03b8-4639-99ef-8aa362a2d797
+		dataCategory: ImageUrl
+		summarizeBy: none
+		sourceColumn: Picture
+
+		annotation SummarizationSetBy = Automatic
+
+	partition people = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\manoj.c\Desktop\PowerBI\PowerBI-P1-sales-data-blank.xlsx"), null, true),
+				    people_Table = Source{[Item="people",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(people_Table,{{"Sales person", type text}, {"Team", type text}, {"Picture", type text}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type",null,"special",Replacer.ReplaceValue,{"Team"})
+				in
+				    #"Replaced Value"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
